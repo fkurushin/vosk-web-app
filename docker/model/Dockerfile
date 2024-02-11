@@ -1,5 +1,4 @@
 FROM danijel3/kaldi-online-tcp
-MAINTAINER Danijel Koržinek <danijel@pja.edu.pl>
 
 COPY model /model
 

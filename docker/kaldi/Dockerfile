@@ -1,5 +1,4 @@
 FROM debian:testing
-MAINTAINER Danijel Koržinek <danijel.korzinek@pja.edu.pl>
 
 RUN apt-get update && \
 		apt-get install -y g++ zlib1g-dev make automake libtool-bin git autoconf gawk unzip && \

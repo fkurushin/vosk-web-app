@@ -1,5 +1,4 @@
 FROM debian:testing
-MAINTAINER Danijel Koržinek <danijel.korzinek@pja.edu.pl>
 
 RUN apt-get update && \
     apt-get install -y python3 python3-pip git libavdevice-dev libavfilter-dev libopus-dev libvpx-dev pkg-config &&\
