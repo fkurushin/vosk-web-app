@@ -6,7 +6,7 @@ The model is downloaded from https://alphacephei.com/vosk/models and unzipped to
 
 `docker build -t backend-server -f Dockerfile.backend .`
 
-`docker run -d --name backend-server -p  2700:2700 vosk-backend-server`
+`docker run -d --name backend-server -p  2700:2700 backend-server`
 
 ## Frontend
 
