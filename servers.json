@@ -1,7 +1,7 @@
 [
   {
     "name": "default",
-    "host": "localhost",
+    "host": "backend-server",
     "port": 5050,
     "samplerate": 8000
   }

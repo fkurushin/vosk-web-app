@@ -1,10 +1,15 @@
-version: '3.3'
+version: '3'
 services:
-  kaldi:
-    image: "backend-server"
-  web:
-    image: "danijel3/kaldi-webrtc"
-    volumes:
-      - ${PWD}/servers.json:/server/servers.json
+  backend-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "5050:5050"
+
+  frontend-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
     ports:
       - "8080:8080"
