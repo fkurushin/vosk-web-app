@@ -51,7 +51,7 @@ ENV LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}"
 
 WORKDIR /model
 
-COPY backend_v2/model .
+COPY model .
 
 EXPOSE 5050
 
