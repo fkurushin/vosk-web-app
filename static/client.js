@@ -154,8 +154,11 @@ function stop() {
 
     // close local audio / video
     pc.getSenders().forEach(function (sender) {
-        sender.track.stop();
+        if (sender.track) {
+            sender.track.stop();
+        }
     });
+
 
     // close peer connection
     setTimeout(function () {
