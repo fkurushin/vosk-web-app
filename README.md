@@ -1,5 +1,15 @@
+## ML part
 
-`docker build -t backend-server -f docker/backend-server/Dockerfile .`
+The model is downloaded from https://alphacephei.com/vosk/models and unzipped to a `model` directory
+
+## Backend
+
+`docker build -t backend-server -f Dockerfile.backend .`
+
 `docker run -d --name backend-server -p  2700:2700 vosk-backend-server`
 
-the model is downloaded from https://alphacephei.com/vosk/models and unzipped to a `model` directory
+## Frontend
+
+`docker build -t frontend-server -f Dockerfile.frontend .`
+
+`docker run -d --name frontend-server -p  8080:8080 frontend-server`
