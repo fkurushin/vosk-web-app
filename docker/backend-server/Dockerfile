@@ -1,0 +1,60 @@
+FROM debian:11 AS builder
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        g++ \
+        make \
+        automake \
+        autoconf \
+        bzip2 \
+        unzip \
+        wget \
+        sox \
+        libtool \
+        git \
+        subversion \
+        python2.7 \
+        python3 \
+        zlib1g-dev \
+        ca-certificates \
+        gfortran \
+        patch \
+        ffmpeg \
+	vim && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN git clone https://github.com/kaldi-asr/kaldi /opt/kaldi
+
+WORKDIR /opt/kaldi/tools 
+RUN ./extras/install_openblas.sh && \
+    make -j $(nproc)
+
+WORKDIR /opt/kaldi/src
+RUN ./configure --shared --mathlib=OPENBLAS --use-cuda=no && \
+    make -j $(nproc) depend && \
+    make -j $(nproc)
+
+# ENTRYPOINT ["/bin/bash", "-c"]
+
+FROM debian:11
+COPY --from=builder /opt/kaldi/src/online2bin/online2-tcp-nnet3-decode-faster /usr/bin
+
+WORKDIR /usr/lib/x86_64-linux-gnu
+COPY --from=builder /opt/kaldi/tools/openfst/lib/libfst.so* .
+COPY --from=builder /opt/kaldi/src/*/libkaldi-*.so .
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    libopenblas-dev
+
+ENV LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}"
+
+WORKDIR /model
+
+COPY backend_v2/model .
+
+EXPOSE 5050
+
+ENTRYPOINT ["online2-tcp-nnet3-decode-faster","--read-timeout=-1","--samp-freq=8000","--frames-per-chunk=20",\
+"--extra-left-context-initial=0","--frame-subsampling-factor=3","--config=/model/conf/online.conf","--min-active=200","--max-active=7000",\
+"--beam=15","--lattice-beam=8","--acoustic-scale=1.0","--port-num=5050","/model/am/final.mdl","/model/graph/HCLG.fst","/model/graph/words.txt"]
