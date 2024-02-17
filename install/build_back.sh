@@ -1,8 +1,9 @@
 #!/bin/bash
+MODELNAME=vosk-model-ru-0.42
 
-sudo apt-get update
+apt-get update
 
-sudo apt-get install -y --no-install-recommends \
+apt-get install -y --no-install-recommends \
     g++ \
     make \
     automake \
@@ -24,23 +25,23 @@ sudo apt-get install -y --no-install-recommends \
     vim \
     libopenblas-dev
 
-wget https://github.com/fkurushin/vosk-web-app/archive/refs/heads/master.zip
+wget https://alphacephei.com/vosk/models/$MODELNAME.zip
 
-unzip master.zip && rm master.zip
+unzip $MODELNAME.zip && rm $MODELNAME.zip
 
-wget https://alphacephei.com/vosk/models/vosk-model-ru-0.22.zip
+mv $MODELNAME/* .
 
-unzip vosk-model-ru-0.22.zip -d model && rm vosk-model-ru-0.22.zip
+git clone https://github.com/kaldi-asr/kaldi.git
 
-git clone https://github.com/kaldi-asr/kaldi/opt/kaldi
-
-cd /opt/kaldi/tools
+cd ./kaldi/tools
 
 ./extras/install_openblas.sh
 
+./extras/install_irstlm.sh
+
 make -j $(nproc)
 
-cd /opt/kaldi/src
+cd ../src
 
 ./configure --shared --mathlib=OPENBLAS --use-cuda=no
 
@@ -50,8 +51,21 @@ make -j $(nproc)
 
 export LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}"
 
-/opt/kaldi/src/online2bin/online2-tcp-nnet3-decode-faster --read-timeout=-1 --samp-freq=8000 --frames-per-chunk=20 \
---extra-left-context-initial=0 --frame-subsampling-factor=3 --config=/model/conf/online.conf --min-active=200 --max-active=7000 \
---beam=15 --lattice-beam=8 --acoustic-scale=1.0 --port-num=5050 /model/am/final.mdl /model/graph/HCLG.fst /model/graph/words.txt
+cd /scripts
 
-
+kaldi/src/online2bin/online2-tcp-nnet3-decode-faster \
+--read-timeout=-1 \
+--samp-freq=8000 \
+--frames-per-chunk=20 \
+--extra-left-context-initial=0 \
+--frame-subsampling-factor=3 \
+--config=conf/online.conf \
+--min-active=200 \
+--max-active=7000 \
+--beam=15 \
+--lattice-beam=8 \
+--acoustic-scale=1.0 \
+--port-num=5050 \
+am/final.mdl \
+graph/HCLG.fst \
+graph/words.txt

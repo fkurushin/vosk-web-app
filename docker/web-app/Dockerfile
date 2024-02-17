@@ -12,4 +12,4 @@ COPY *.py .
 COPY servers.json .
 COPY static/* static/
 
-ENTRYPOINT ["python3", "/app/server.py", "--servers", "/app/servers.json"]
+ENTRYPOINT ["python3", "/app/server.py", "--servers", "/app/config/docker.json"]
