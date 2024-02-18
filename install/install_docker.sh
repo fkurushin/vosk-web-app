@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Удаление возможных файлов, связанных с предыдущими неудачными попытками запуска Docker
-sudo rm -rf /var/run/docker.sock 
-sudo rm -rf /var/run/docker/libcontainerd/containerd/* 
-sudo rm -rf /var/run/docker/libcontainerd/docker-containerd.pid
-
 # Установка Docker
 curl -fsSL https://get.docker.com -o get-docker.sh 
 sh get-docker.sh 

@@ -52,3 +52,7 @@ docker commit 43ac12e4115b frontend-server:latest -->
 
 
 
+
+<!-- minikube image load backend-server && minikube image load frontend-server && kubectl apply -f deploy/svc.yml && kubectl port-forward pod/vosk-web-app-pod  8080:8080 -->
+
+<!-- docker build -t backend-server -f docker/vosk-server/Dockerfile . && minikube image load backend-server && minikube image load frontend-server && kubectl apply -f deploy/svc.yml && kubectl port-forward pod/vosk-web-app-pod  8080:8080 -->

@@ -3,13 +3,13 @@ services:
   backend-server:
     build:
       context: .
-      dockerfile: Dockerfile.backend
+      dockerfile: docker/vosk-server/Dockerfile
     ports:
       - "5050:5050"
 
   frontend-server:
     build:
       context: .
-      dockerfile: Dockerfile.frontend
+      dockerfile: docker/web-app/Dockerfile
     ports:
       - "8080:8080"

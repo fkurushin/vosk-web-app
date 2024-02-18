@@ -9,9 +9,9 @@ RUN pip3 install aiortc aiohttp google-crc32c numpy
 WORKDIR /app
 
 COPY *.py .
-COPY config/server.json .
+COPY config/local.json .
 COPY static/* static/
 
 EXPOSE 8080
 
-ENTRYPOINT ["python3", "/app/server.py", "--servers", "/app/server.json"]
+ENTRYPOINT ["python3", "/app/server.py", "--servers", "/app/local.json"]

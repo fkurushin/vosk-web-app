@@ -34,8 +34,6 @@ RUN ./configure --shared --mathlib=OPENBLAS --use-cuda=no && \
     make -j $(nproc) depend && \
     make -j $(nproc)
 
-# ENTRYPOINT ["/bin/bash", "-c"]
-
 FROM debian:11
 COPY --from=builder /opt/kaldi/src/online2bin/online2-tcp-nnet3-decode-faster /usr/bin
 
